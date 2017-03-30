@@ -1,0 +1,6 @@
+Git命令行
+1.git init  初始化仓库
+2.git add  添加一个或多个文件
+3.git commit  提交一个或多个文件 -m “” 添加修改的说明 -a 全部提交
+4.git status 查看项目状态
+5.git diff 查看修改的详细位置
