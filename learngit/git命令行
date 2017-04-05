@@ -1,9 +1,13 @@
 Git命令行
 1.git init  初始化仓库
 2.git add  添加一个或多个文件
-3.git commit  提交一个或多个文件 -m “” 添加修改的说明 -a 全部提交
+3.git commit  提交一个或多个文件 -m “” 添加修改的说明/-a 全部提交
 4.git status 查看项目状态
 5.git diff 查看修改的详细位置
 6.git log 查看提交历史，以便确定要回退到哪个版本
 7.git reset --hard 退回指定版本
 8.git reflog 查看命令历史，以便确定要回到哪个版本
+
+9.git-工作区和暂存区
+10.git checkout 回复版本库的最近版本
+11.gti rm 删除文件
