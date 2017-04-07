@@ -11,3 +11,6 @@ Git命令行
 9.git-工作区和暂存区
 10.git checkout 回复版本库的最近版本
 11.gti rm 删除文件
+
+12.git remote add origin_STCode git@github.com:whonor/STC_MCU_Code.git  建立并关联远程库
+13.git push *** master  推送到远程库
