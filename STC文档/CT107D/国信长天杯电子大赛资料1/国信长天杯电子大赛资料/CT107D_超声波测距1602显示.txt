@@ -1,0 +1,145 @@
+#include<reg52.h>
+
+#define rst573 P2&=0x1f
+#define ledY4C P2|=0x80
+#define beeY5C P2|=0xa0
+#define smgY6C P2|=0xc0
+#define smgY7C P2|=0xe0
+
+sbit P06=P0^6;
+sbit P04=P0^4;
+sbit P36=P3^6;
+
+sbit rs1602=P2^0;
+sbit wr1602=P2^1;
+sbit en1602=P1^2;
+
+sbit T_sonic=P1^0;
+sbit R_sonic=P1^1;
+unsigned int time;
+
+void delay6us(unsigned char us)//11+us*6 
+{
+	while(us--);
+}
+void delaynms(unsigned int ms)
+{
+	unsigned int x,y;
+	for(x=ms;x;x--)
+	for(y=110;y;y--);
+}
+void init107()
+{
+	rst573;
+	P36=0;
+	//close led
+	P0=0xff;
+	ledY4C;
+	rst573;
+	//close bee
+	P04=0;
+	P06=0;
+	beeY5C;
+	rst573;
+	//close smg
+	P0=0x00;
+	smgY6C;
+	rst573;
+}
+//此为查询法测距：先发送，再查询是否接受到
+void com1602(unsigned char com)
+{
+	rs1602=0;
+	wr1602=0;
+	P0=com;
+	delay6us(130);
+//	delaynms(1);
+	en1602=1;
+	en1602=0;
+	delay6us(130);
+//	delaynms(1);
+}
+
+void dat1602(unsigned char dat)
+{
+	rs1602=1;
+	wr1602=0;
+	P0=dat;
+	en1602=1;
+	delay6us(130);
+//	delaynms(1);
+	en1602=0;
+	delay6us(130);
+//	delaynms(1);
+}
+
+void init1602()
+{
+	en1602=0;
+	com1602(0x38);//显示模式设置指令   1602固定的第一句指令
+	com1602(0x0e);//光标打开，不闪烁
+	com1602(0x06);//写入一个字符后指针地址加1，写一个字符时整屏不移动
+//	com1602(0x07);//写入一个字符后指针地址加1，写一个字符时整屏移动
+	com1602(0x01);//清屏显示，数据指针清0
+}
+
+void init_timer0()
+{
+	TMOD=0x01;
+	TH0=0;
+	TL0=0;
+	ET0=1;
+	EA=1;
+}
+
+void timer0() interrupt 1
+{
+	time=0;
+}
+
+void sonic()
+{
+	while(R_sonic)
+	{
+		TR0=1;
+		T_sonic=1;
+		delay6us(0);//12us
+		T_sonic=0;
+		delay6us(0);
+	}
+	TR0=0;
+	time=(int)((TH0*256+TL0)*0.172);
+	TH0=0;
+	TL0=0;
+	R_sonic=1;
+}
+void main()
+{
+	unsigned char aa[]="The length:";
+	unsigned char *p;
+	unsigned int time1;
+	init107();
+	init_timer0();
+	init1602();
+	com1602(0x80);
+	for(p=aa;*p;p++)
+	{
+		dat1602(*p);
+	}
+	while(1)
+	{
+		sonic();
+		if(time!=0)
+		{
+			if(time!=time1)	
+			{
+				com1602(0x8c);
+				dat1602(time/1000+'0');
+				dat1602(time%1000/100+'0');
+				dat1602(time%100/10+'0');
+				dat1602(time%10+'0');
+			}
+		}
+		delaynms(300);
+	}
+}
