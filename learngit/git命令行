@@ -23,3 +23,5 @@ Git命令行
 19.git merge 《name》合并到当前分支
 20.git branch -d 《name》删除当前分支
 
+21.git merge -no-ff -m"" 用普通模式合并，可以查看历史记录
+ 
