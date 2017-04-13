@@ -14,3 +14,12 @@ Git命令行
 
 12.git remote add origin_STCode git@github.com:whonor/STC_MCU_Code.git  建立并关联远程库
 13.git push *** master  推送到远程库
+
+14.git clone git@github.com:whonor/～.git 克隆远程库到本地
+15.git branch 查看分支
+16.git branch 《name》创建分支
+17.git checkout 《name》切换分支
+18.git checkout -b 《name》创建并且切换分支
+19.git merge 《name》合并到当前分支
+20.git branch -d 《name》删除当前分支
+
