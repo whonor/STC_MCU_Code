@@ -28,3 +28,5 @@ Git命令行
 22.git stash 保存现场
 23.git stash pop 回复现场
 
+24.git tag  添加标签
+
