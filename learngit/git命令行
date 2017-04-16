@@ -24,4 +24,7 @@ Git命令行
 20.git branch -d 《name》删除当前分支
 
 21.git merge -no-ff -m"" 用普通模式合并，可以查看历史记录
- 
+
+22.git stash 保存现场
+23.git stash pop 回复现场
+
